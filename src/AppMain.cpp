@@ -16,6 +16,7 @@ namespace mgu
     int AppMain::Run()
     {
         std::cout << "Hola mundo" << std::endl;
+        std::cout << "This is a test" << std::endl;
         return 0;
     }
 }
