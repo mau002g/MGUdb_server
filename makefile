@@ -21,7 +21,7 @@ all: $(bin)/$(target)
 #Enlazamos el programa principal
 $(bin)/$(target): $(objetos)
 	@echo Enlazando $@
-	@$(cpp) -o $@ $(objetos) $(linkflags)
+	@$(cpp) -o $@ $(objetos) $(linkflags) -L$(lib)
 	@echo Todo bien.
 
 #Compilamos los archivos fuente
