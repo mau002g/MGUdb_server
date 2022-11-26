@@ -2,6 +2,8 @@
 #define APP_MAIN_HPP
 
 #include <iostream>
+#include <ws2tcpip.h>
+#include <string>
 
 namespace mgu
 {
@@ -18,6 +20,11 @@ namespace mgu
         int Run();
 
         private:
+
+        WSADATA wsData;
+        SOCKET _server;
+        sockaddr_in _sint;
+        fd_set _master;
     }; 
 }
 

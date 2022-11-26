@@ -3,7 +3,7 @@
 #Compilador y parámetros
 cpp = g++
 cppflags = -std=c++11 -Wall -m32
-linkflags = -s -m32 -std=c++11
+linkflags = -s -m32 -std=c++11 -lws2_32
 #Carpetas de direcciones de includes, lib y otras cosas
 inc = include
 src = src
