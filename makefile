@@ -13,7 +13,7 @@ obj = obj
 target = mgudb_server.exe
 
 #lista de objetos a compilar
-objetos = $(obj)/main.o $(obj)/AppMain.o
+objetos = $(obj)/main.o $(obj)/AppMain.o $(obj)/com_elements.o
 
 #Definciones de los objetivos
 all: $(bin)/$(target)
@@ -33,6 +33,9 @@ $(obj)/AppMain.o: $(src)/AppMain.hpp $(src)/AppMain.cpp
 	@echo G++ $@
 	@$(cpp) -c $(src)/AppMain.cpp -o $@ $(cppflags) -I$(inc)
 
+$(obj)/com_elements.o: $(inc)/com_elements.hpp $(src)/com_elements.cpp
+	@echo G++ $@
+	@$(cpp) -c $(src)/com_elements.cpp -o $@ $(cppflags) -I$(inc)
 
 .PHONY: clean
 clean:

@@ -9,23 +9,21 @@ namespace mgu
 {
     class AppMain
     {
-        public:
-
-        //Constructor
+    public:
+        // Constructor
         AppMain();
-        //Destructor
+        // Destructor
         ~AppMain();
 
-        //Funciones
+        // Funciones
         int Run();
 
-        private:
-
+    private:
         WSADATA wsData;
         SOCKET _server;
         sockaddr_in _sint;
         fd_set _master;
-    }; 
+    };
 }
 
-#endif //APP_MAIN_HPP
+#endif // APP_MAIN_HPP
