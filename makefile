@@ -1,6 +1,6 @@
-#ConatrucciÛn del MGUdb_server para Windows
+#Construcci√≥n del MGUdb_server para Windows
 
-#Compilador y par·metros
+#Compilador y par√°metros
 cpp = g++
 cppflags = -std=c++11 -Wall -m32
 linkflags = -s -m32 -std=c++11
