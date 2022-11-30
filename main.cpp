@@ -10,7 +10,11 @@ int main(int argc, char **argv)
     return rtn; */
 
     mgu::AuthQuery qr("mauro2002", "3012283423324", 365);
-
+    std::string text("'he'l'lo,");
     std::cout << qr.getAsString() << std::endl;
-    return 0;
+
+    //for(auto i(0U); i < p.size(); i++)
+      //  std::cout << "Element[" << i << "] : " << p[i] << std::endl;
+
+            return 0;
 }
