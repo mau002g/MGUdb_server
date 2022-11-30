@@ -28,9 +28,12 @@ namespace mgu
         public:
         //Constructores
         AuthQuery();
+        AuthQuery(std::string texto_decode);
         AuthQuery(std::string user, std::string SpecialKey, int ID);
         //Funciones
 
+        //Creamos una AuthQuery desde una cadena de texto
+        bool FromText(std::string text);
         //Obtenermos la consula en forma de cadena
         std::string getAsString();
 

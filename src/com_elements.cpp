@@ -1,6 +1,7 @@
 #include <com_elements.hpp>
 #include <vector>
 #include <string>
+#include <stdexcept>
 
 namespace mgu
 {
@@ -30,7 +31,7 @@ namespace mgu
         std::vector<std::size_t> pos;
         std::string data("");
         std::size_t len = str.length();
-        decltype(len) i(0), ref;
+        decltype(len) i(0), ref(0);
         bool not_found(false);
         while (i < len)
         {
@@ -72,7 +73,38 @@ namespace mgu
     AuthQuery::AuthQuery(std::string user, std::string SpecialKey, int ID) : _user(user),
                                                                              _special_key(SpecialKey),
                                                                              _id(ID) {}
+    AuthQuery::AuthQuery(std::string texto) : _user(""),
+                             _special_key(""),
+                             _id(0) { this->FromText(texto); }
+    //Función para obtener desde una cadena de texto
+    bool AuthQuery::FromText(std::string t)
+    {
+        std::vector<std::string> vt = sToVector(t, ';');
+        std::string tuser, tsk;
+        int tid(0);
+        if(vt.empty() || (vt.size() != 4U))
+        {
+            return false;
+        }
+        if(vt[0] == "AUSO32")
+        {
+            tuser = vt[1];
+            tsk = vt[2];
+            try
+            {
+                tid = std::stoi(vt[3], nullptr);
+            }
+            catch(const std::invalid_argument &error)
+            {
+                tid = 0;
+            }
+        }else return false;
 
+        this->_id = tid;
+        this->_user = tuser;
+        this->_special_key = tsk;
+        return true;
+    }
     // Funciones IO
     std::string AuthQuery::getUser()
     {
@@ -103,8 +135,8 @@ namespace mgu
     std::string AuthQuery::getAsString()
     {
         std::string temp("");
-        temp += "MGUAR32;";
-        temp = temp + "\"" + this->_user + "\";\"" + this->_special_key + "\";\"" + std::to_string(this->_id) + "\"";
+        temp += "\'AUSO32\';";
+        temp = temp + "\'" + this->_user + "\';\'" + this->_special_key + "\';\'" + std::to_string(this->_id) + "\'";
         return temp;
     }
 }
