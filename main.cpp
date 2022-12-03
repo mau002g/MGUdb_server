@@ -1,6 +1,8 @@
 #include "src/AppMain.hpp"
 #include "include/com_elements.hpp"
 
+
+
 int main(int argc, char **argv)
 {
     /*int rtn(0);
@@ -8,15 +10,9 @@ int main(int argc, char **argv)
     rtn = myapp->Run();
     delete myapp;
     return rtn; */
-
-    mgu::AuthQuery qr("mauro2002", "3012283423324", 365);
-    mgu::AuthQuery qr2;
-    std::string text("'he'l'lo,");
-    std::cout << qr.getAsString() << std::endl;
-    qr2.FromText(qr.getAsString());
-    std::cout << qr2.getAsString() << std::endl;
-    //for(auto i(0U); i < p.size(); i++)
-      //  std::cout << "Element[" << i << "] : " << p[i] << std::endl;
-
-            return 0;
+    std::string test =  mgu::Query(mgu::COM, "\"hello + hel\"; \"mauro\"").getAsString();
+    mgu::Query t;
+    t.FromText(test);
+    std::cout << t.getComand() << " " << mgu::COM << std::endl;
+    return 0;
 }

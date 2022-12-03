@@ -37,6 +37,10 @@ $(obj)/com_elements.o: $(inc)/com_elements.hpp $(src)/com_elements.cpp
 	@echo G++ $@
 	@$(cpp) -c $(src)/com_elements.cpp -o $@ $(cppflags) -I$(inc)
 
-.PHONY: clean
+.PHONY: clean exe
 clean:
 	rm -f $(bin)/$(target) $(objetos)
+
+exe:
+	@./$(bin)/$(target)
+
