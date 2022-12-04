@@ -316,4 +316,67 @@ namespace mgu
     {
         return this->params.size();
     }
+    ////////////////////////////////////////////
+    /// @class Response
+    ////////////////////////////////////////////
+
+    // Constructor
+    Response::Response(ResponseType tp, std::string data) : rtp(tp), mm(data), r(QOK) {}
+    Response::Response() : rtp(RNULL), mm(""), r(QNULL) {}
+
+    QueryReturn Response::setReturn(QueryReturn z)
+    {
+        this->r = z;
+        return this->r;
+    }
+
+    QueryReturn Response::FromText(std::string text)
+    {
+        std::vector<std::string> vt = sToVector(text, ';');
+        int res(0);
+        if (vt.empty() || (vt.size() != 3U))
+        {
+            return this->setReturn(QINVALID);
+        }
+        if (vt[0] == "QRRES")
+        {
+            try
+            {
+                res = std::stoi(vt[1], nullptr);
+            }
+            catch (const std::invalid_argument &error)
+            {
+                return this->setReturn(QINVALID);
+            }
+            this->rtp = static_cast<ResponseType>(res);
+            this->mm = vt[2];
+            this->setReturn(QOK);
+        }
+        else
+        {
+            this->setReturn(QINVALID);
+        }
+
+        return this->r;
+    }
+    std::string Response::getData()
+    {
+        return this->mm;
+    }
+    ResponseType Response::getResponse()
+    {
+        return this->rtp;
+    }
+    QueryReturn Response::getStatus()
+    {
+        return this->r;
+    }
+    std::string Response::getAsString()
+    {
+        std::string temp("");
+        temp += "\"QRRES\";\"";
+        temp += std::to_string(this->rtp) + "\";\"";
+        temp += this->mm + "\"";
+        return temp;
+    }
 }

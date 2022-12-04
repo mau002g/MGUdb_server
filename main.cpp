@@ -10,9 +10,8 @@ int main(int argc, char **argv)
     rtn = myapp->Run();
     delete myapp;
     return rtn; */
-    std::string test =  mgu::Query(mgu::COM, "\"hello + hel\"; \"mauro\"").getAsString();
-    mgu::Query t;
-    t.FromText(test);
-    std::cout << t.getComand() << " " << mgu::COM << std::endl;
+    std::string a = mgu::Response(mgu::RDATA, "mauroe").getAsString();
+    mgu::Response d; d.FromText(a);
+    std::cout <<  d.getData() << "," << mgu::RDATA << std::endl;
     return 0;
 }

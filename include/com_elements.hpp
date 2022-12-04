@@ -21,7 +21,15 @@ namespace mgu
         QOK,
         QNULL 
     };
-
+    enum ResponseType
+    {
+        RERROR = 0x2222,
+        RDENIED,
+        RDATA,
+        ROK,
+        RMESSAGE,
+        RNULL
+    };
     enum QueryType
     {
         COM=0X55C3, /* ejecutar comandos */
@@ -128,10 +136,25 @@ namespace mgu
         std::string getAsString();
 
     };
-    class Reponse
+    /////////////////////////////////////////////////////////////
+    /// @brief Se encarga de manejar las respuestas del servidor 
+    /// al cliente.
+    /////////////////////////////////////////////////////////////
+    class Response
     {
         private:
+        ResponseType rtp;
+        std::string mm; //Usos multiples
+        QueryReturn r;
+        QueryReturn setReturn(QueryReturn n);
         public:
+        Response();
+        Response(ResponseType tp, std::string data);
+        QueryReturn FromText(std::string text);
+        std::string getAsString();
+        QueryReturn getStatus();
+        ResponseType getResponse();
+        std::string getData();
     };
 
 }
