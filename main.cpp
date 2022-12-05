@@ -1,6 +1,6 @@
-#include "src/AppMain.hpp"
-#include "include/com_elements.hpp"
-
+//#include "src/AppMain.hpp"
+#include "include/database_control.hpp"
+#include <cstdlib>
 
 
 int main(int argc, char **argv)
@@ -10,8 +10,9 @@ int main(int argc, char **argv)
     rtn = myapp->Run();
     delete myapp;
     return rtn; */
-    std::string a = mgu::Response(mgu::RDATA, "mauroe").getAsString();
-    mgu::Response d; d.FromText(a);
-    std::cout <<  d.getData() << "," << mgu::RDATA << std::endl;
+
+    mgu::db_control db;
+    db.Start();
+    std::system("pause");
     return 0;
 }
