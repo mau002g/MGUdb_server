@@ -9,9 +9,18 @@ namespace mgu
     {
         setlocale(LC_CTYPE, "spanish");
         std::cout << "[INICIALIZANDO]" << std::endl;
+
         WORD ver = MAKEWORD(2, 2);
         try
         {
+
+            // Primero creamos las base de datos
+            if (!ctrl.Start())
+            {
+                std::cout << "[DETENIDO]" << std::endl;
+                throw true;
+            }
+
             // Inicializamos el winsock
             int wsOk = WSAStartup(ver, &(this->wsData));
             if (wsOk != 0)
@@ -84,7 +93,7 @@ namespace mgu
                     SOCKET client = accept(this->_server, nullptr, 0);
 
                     getpeername(client, reinterpret_cast<sockaddr *>(&client_info), &ss);
-                    
+
                     // Obteniendo y mos trando la ip
                     std::string client_ip(inet_ntoa(client_info.sin_addr));
 
@@ -93,21 +102,23 @@ namespace mgu
                     std::cout << "[NUEVA CONEXIÓN] IP: " << client_ip << " Puerto: " << puerto << std::endl;
 
                     // Aunteticamos
-                    
+
                     // si todo sale bien lo añadimos a la lista de clientes
                     FD_SET(client, &(this->_master));
                 }
                 else // Parece que es un mensaje
                 {
-                    /*
-                    int bytesIn = recv(sock, buff, 4096, 0);
-                    if( bytesIN <= 0)
+                    char buff[4096];
+                    int bytesIn = recv(tsock, buff, 4096, 0);
+                    if (bytesIn <= 0)
                     {
-                        closesocket(sock);
-                        FD_CLR(sock, master);
+                        closesocket(tsock);
+                        FD_CLR(tsock, &(this->_master));
                         continue;
                     }
-                    */
+                    std::string sol(buff);
+                    sol = ctrl.Process(sol);
+                    send(tsock, sol.c_str(), sol.length() + 1, 0);
                 }
             }
         }

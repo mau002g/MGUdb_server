@@ -1,18 +1,14 @@
 //#include "src/AppMain.hpp"
-#include "include/database_control.hpp"
+#include "src/AppMain.hpp"
 #include <cstdlib>
 
 
 int main(int argc, char **argv)
 {
-    /*int rtn(0);
+    int rtn(0);
     mgu::AppMain *myapp = new mgu::AppMain;
     rtn = myapp->Run();
     delete myapp;
-    return rtn; */
-
-    mgu::db_control db;
-    db.Start();
-    std::system("pause");
+    return rtn;
     return 0;
 }

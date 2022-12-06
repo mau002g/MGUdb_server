@@ -30,7 +30,8 @@ namespace mgu
         db_control() {}
         ~db_control();
         bool Start();
-        Response Process(Query);
+        //Recibe una Query como cadena, procesa y devuelve un Response en forma de cadena
+        std::string Process(std::string q);
     };
 }
 

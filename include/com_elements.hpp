@@ -32,12 +32,6 @@ namespace mgu
     };
     enum QueryType
     {
-        COM=0X55C3, /* ejecutar comandos */
-        NO, /* Nada para hacer */
-    };
-
-    enum COMANDS
-    {
         not_defined = 0,
         create_db = 0x2f6c,  //Crear una base de datos
         create_tb,           //Crear tablas
@@ -54,6 +48,7 @@ namespace mgu
         get_tb_columns,      //Devuelve el numero de columnas de una tabla
         get_tb_column_name, //Devuelve el nombre de una columna
     };
+
     ////////////////////////////////////////////////////////////
     /// @brief Define la consulta de auntenticación al servidor
     //////////////////////////////////////////////////////////// 
@@ -123,14 +118,16 @@ namespace mgu
         private:
         QueryType tp;
         QueryReturn r;
+        std::string db;
         std::vector<std::string> params;
         bool isComand(unsigned int );
         public:
-        Query() : tp(NO) {}
-        Query(QueryType c, std::string params);
+        Query() : tp(not_defined) {}
+        Query(QueryType c, std::string params, std::string db);
         QueryReturn getStatus();
         QueryReturn FromText(std::string t);
         QueryType getComand();
+        std::string getDB();
         std::string getParam(unsigned int index); //Desde cero
         unsigned int getNParams();
         std::string getAsString();

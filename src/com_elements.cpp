@@ -215,13 +215,14 @@ namespace mgu
     ///////////////////////////////////////////////////////////
 
     // Constructor
-    Query::Query(QueryType com, std::string p) : tp(com)
+    Query::Query(QueryType com, std::string p, std::string _db) : tp(com)
     {
+        this->db = _db;
         this->params = sToVector(p, ';');
         if (this->params.empty())
         {
             // No se definió correctamente la lista de parametros
-            this->tp = NO;
+            this->tp = not_defined;
             this->r = QINVALID;
             return;
         }
@@ -231,12 +232,17 @@ namespace mgu
         return this->r;
     }
 
+    std::string Query::getDB()
+    {
+        return this->db;
+    }
+
     QueryReturn Query::FromText(std::string t)
     {
         unsigned int cmm(0U);
         std::vector<std::string> vec1 = sToVector(t, ';');
         std::vector<std::string> ttm;
-        if (vec1.empty() || vec1.size() < 2U)
+        if (vec1.empty() || vec1.size() < 3U)
         {
             this->r = QINVALID;
             return this->r;
@@ -251,7 +257,8 @@ namespace mgu
                     this->r = QINVALID;
                     return this->r;
                 }
-                for (auto i(2U); i < vec1.size(); i++)
+                this->db = vec1[2];
+                for (auto i(3U); i < vec1.size(); i++)
                 {
                     ttm.push_back(vec1[i]);
                 }
@@ -278,7 +285,21 @@ namespace mgu
     {
         switch (c)
         {
-        case COM:
+        case not_defined:
+        case create_db:
+        case create_tb:           // Crear tablas
+        case create_tg:           // Crear una etiqueta
+        case delete_db:           // Borar base de datos
+        case delete_tb:           // Borra una tabla
+        case delete_tg:           // Borrar una etiqueta
+        case delete_row_in_tb:    // Borra una fila en una tabla
+        case delete_column_in_tb: // Borra una columna en una tabla
+        case insert_in_tb:        // Insertar datos a una tabla
+        case mod_tg:              // Modifica datos en una etiqueta
+        case mod_in_tb:           // Modificar datos en una tabla
+        case get_tb_rows:         // Devuelve el numero de filas de una tabla
+        case get_tb_columns:      // Devuelve el numero de columnas de una tabla
+        case get_tb_column_name:  // Devuelve el nombre de una columna
             return true;
         default:
             return false;
@@ -298,7 +319,8 @@ namespace mgu
     {
         std::string temp("");
         temp += "\"QRSOL\";\"";
-        temp += std::to_string(this->tp) + "\"";
+        temp += std::to_string(this->tp) + "\";\"";
+        temp += this->db + "\"";
         for (auto i = 0U; i < this->params.size(); ++i)
         {
             temp += ";\"";

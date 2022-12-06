@@ -66,7 +66,6 @@ namespace mgu
         if (dna.empty())
         {
             std::cout << "[?] No hay base de datos." << std::endl;
-            return false;
         }
         dtb_index = dna;
         return true;
@@ -157,8 +156,78 @@ namespace mgu
             return false;
         return this->LoadDatabases();
     }
-    Response db_control::Process(Query sol)
+    std::string db_control::Process(std::string _sol)
     {
-        
+        Query sol;
+        if(sol.FromText(_sol) == QINVALID)
+        {
+            return Response(RERROR, "Se ha recibido una solicitud inválida").getAsString(); 
+        }
+        MGUdb *db = ref_by_name(sol.getDB());
+        if(db == nullptr)
+        {
+           return Response(RERROR, "No existe la base de datos seleccionada").getAsString(); 
+        }
+
+        //Obetnemos el comando y lo procesamos
+        QueryType com = sol.getComand();
+
+        if(com == not_defined)
+        {
+            return Response(ROK, "").getAsString();
+
+        }else if(com == create_db)
+        {
+            if(sol.getNParams() < 2U)
+            {
+                return Response(RERROR, "No se han definido correctamente los parámetros").getAsString();
+            }
+
+            MGUdb *temp = this->ref_by_name(sol.getParam(0));
+            if(temp != nullptr)
+            {
+                return Response(RERROR, "Ya existe una base de datos con ese nombre").getAsString();
+            }
+
+            if(!db->Create(this->defdir + "/" + sol.getParam(0) + ".xbb"))
+            {
+                return Response(RERROR, "No se ha podido crear la base de datos").getAsString();
+            }
+            temp = nullptr;
+            temp = new MGUdb;
+            if(temp->UseDB(this->defdir + "/" + sol.getParam(0)))
+            {
+                this->dtbs.push_back(temp);
+                this->dtb_index.push_back(sol.getParam(0));
+            }
+            else
+            {
+                delete temp;
+                return Response(RERROR, "No se ha podido crear la base de datos :(").getAsString();
+            }
+            return Response(ROK, ":)").getAsString();
+
+        }else if(com == create_tb)
+        {
+
+        }else if(com == create_tg)
+        {
+
+        }else if(com == delete_db)
+        {
+
+        }else if(com == delete_tb)
+        {
+
+        }else if(com == delete_tg)
+        {
+
+        }else if(com == insert_in_tb)
+        {
+
+        }else
+        {
+            return Response(RERROR, "Comando inválido").getAsString();
+        }
     }
 }
